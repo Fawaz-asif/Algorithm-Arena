@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algorithm Arena</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif']}}}}
+</script>
+<style>
+body{margin:0;background:#09090b;font-family:'Inter',sans-serif;color:#f4f4f5;}
+.glow-emerald{box-shadow:0 0 20px rgba(16,185,129,0.4)}
+.glow-violet{box-shadow:0 0 20px rgba(139,92,246,0.4)}
+.maze-cell{width:16px;height:16px;transition:background 0.1s}
+@media (min-width: 1024px) { .maze-cell { width: 20px; height: 20px; } }
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.anim-pulse{animation:pulse 1.5s infinite}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.slide-up{animation:slideUp 0.4s ease-out}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fade-in{animation:fadeIn 0.3s ease-out}
+.queen-icon{font-size:1.5rem;filter:drop-shadow(0 0 4px rgba(255,255,255,0.5))}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0f172a}
+::-webkit-scrollbar-thumb{background:#475569;border-radius:3px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="algorithms.js"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

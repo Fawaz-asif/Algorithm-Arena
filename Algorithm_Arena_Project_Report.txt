@@ -1,0 +1,73 @@
+================================================================================
+                        ALGORITHM ARENA: PROJECT REPORT
+================================================================================
+
+1. PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+"Algorithm Arena" is an interactive, web-based educational application designed to visually demonstrate the behavior and performance of classic Artificial Intelligence search algorithms. It serves as an engaging platform where users can pit different algorithms against each other in real-time "duels" across four distinct problem domains (Minigames). The project strictly utilizes vanilla JavaScript for all algorithm logic without relying on external algorithm libraries, ensuring a robust and educational implementation.
+
+2. TECHNOLOGIES & ARCHITECTURE
+--------------------------------------------------------------------------------
+- Frontend Framework: React (via CDN, using Hooks for state management)
+- Styling: Tailwind CSS (via CDN) for modern, responsive, utility-first design.
+- JavaScript Environment: Babel (via CDN) for in-browser JSX compilation.
+- Core Architecture: 
+  - The application relies heavily on JavaScript ES6 Generator Functions (`function*` and `yield`). This pattern allows the computationally heavy search algorithms to pause their execution and yield their current state (visited nodes, current path, statistics) back to the React UI.
+  - The `useAlgoRace` custom React Hook consumes these generators, using a `setInterval` loop to advance both competing algorithms frame-by-frame, ensuring the UI remains responsive and the animations are perfectly synchronized without blocking the main browser thread.
+
+3. DESIGN & UI/UX
+--------------------------------------------------------------------------------
+- Theme: A modern, visually striking dark theme (zinc-950 background) with high-contrast glowing accents.
+- Color Coding: 
+  - Player (You): Emerald Green (#10b981)
+  - Computer (Opponent): Violet Purple (#8b5cf6)
+- Features: 
+  - Dynamic "Speed Control" (0.25x to 10x Turbo) that adjusts the generator interval on-the-fly.
+  - Responsive grids and flexbox layouts.
+  - Detailed diagnostic result modals explaining exactly why one algorithm defeated another based on the specific context of the minigame.
+
+4. MINIGAMES DETAILED BREAKDOWN
+--------------------------------------------------------------------------------
+
+MINIGAME 1: Maze Solver (Uninformed Search)
+- Problem: Navigating a 31x31 randomly generated grid maze from the top-left to the bottom-right.
+- Generation: Uses Recursive Backtracking. To accurately test optimal pathing, ~8% of internal walls are subsequently knocked down to create "imperfect mazes" with loops and multiple paths.
+- Algorithms Implemented:
+  1. Breadth-First Search (BFS): Expands uniformly. Guaranteed shortest path.
+  2. Depth-First Search (DFS): Explores deep into branches. Often finds a sub-optimal path but might get lucky and expand fewer nodes.
+  3. Uniform Cost Search (UCS): Expands the least-cost node (functions similarly to BFS in an unweighted grid).
+  4. Depth-Limited Search (DLS): DFS with a hard depth limit to prevent infinite loops.
+  5. Iterative Deepening DFS (IDDFS): Combines DFS space efficiency with BFS optimality.
+- Unique Feature: Users can toggle the Win Criteria between "Fewest Nodes Explored" and "Shortest Path", allowing for deep analysis of algorithm trade-offs.
+
+MINIGAME 2: Word Ladder Duel (Informed Search)
+- Problem: Transforming a 3-letter start word (e.g., CAT) into an end word (e.g., DOG) by changing exactly one letter at a time. Every intermediate step must be a valid English word.
+- Heuristic Used: Letter-by-letter difference (Hamming Distance style).
+- Algorithms Implemented:
+  1. Greedy Best-First Search: Rushes toward words that visually resemble the target, often hitting dead ends.
+  2. A* Search: Balances the cost of the path taken so far with the heuristic, ensuring the optimal word chain.
+  3. IDA* (Iterative Deepening A*): Uses memory-efficient depth-first search guided by an f-cost threshold.
+  4. Recursive Best-First Search (RBFS): A linear-space alternative to A* that backtracks when alternative branches look more promising.
+- Visualization: A horizontal chain of words building out in real-time.
+
+MINIGAME 3: Tic-Tac-Toe Evaluator (Adversarial Search)
+- Problem: Finding the best possible move for player 'X' from a complex, partially filled mid-game state.
+- Algorithms Implemented:
+  1. Minimax: Explores the entire game tree to the terminal states, assuming perfect play from 'O'.
+  2. Alpha-Beta Pruning: An optimized Minimax that cuts off branches that cannot possibly affect the final decision, resulting in vastly fewer nodes evaluated.
+  3. Greedy: Looks only one step ahead to maximize immediate gain.
+  4. Random: Picks a valid move randomly.
+- Winning Criteria: The algorithm that requires evaluating the fewest game states to determine the best move wins (showcasing Alpha-Beta's extreme superiority over standard Minimax).
+
+MINIGAME 4: 8-Puzzle Solver (Local Search)
+- Problem: The classic sliding tile puzzle. Algorithms must arrange tiles 1-8 in order, with 0 representing the empty space.
+- Heuristic Used: Total Manhattan Distance (sum of the horizontal and vertical distances of each tile from its goal position).
+- Algorithms Implemented:
+  1. Hill Climbing: Always moves to a state with a better (lower) heuristic. Susceptible to getting stuck in local optima.
+  2. Simulated Annealing: Sometimes accepts worse moves based on a decaying "temperature" probability, allowing it to escape local optima.
+  3. Beam Search: Maintains the 'k' (k=3) best states at each level rather than a single state or the entire frontier.
+- Visualization: The 3x3 board updates live. If an algorithm (like Hill Climbing) gets stuck, the board flashes a red border alerting the user to "LOCAL OPTIMA!".
+
+5. SUMMARY
+--------------------------------------------------------------------------------
+Algorithm Arena successfully bridges the gap between theoretical AI concepts and tangible, visual understanding. By forcing the algorithms to run in a controlled, frame-by-frame Generator pattern, users can literally watch the decision-making process of Uninformed, Informed, Adversarial, and Local search algorithms unfold right before their eyes.
